@@ -1,23 +1,21 @@
-import express from 'express'
-import { Request, Response } from 'express'
+import {Path, GET, POST, PathParam} from 'typescript-rest';
+import {OK} from '../helpers/helper';
 
-export default class ProductController {
-    public router = express.Router();
-
-    constructor() {
-        this.initRoutes()
+@Path('/product')
+class ProductController {
+    @GET
+    product(): {message: string} {
+        return OK({message: "Hi from product index"});
     }
 
-    public initRoutes() {
-        this.router.get('/product', (req: Request, res: Response) => {
-            res.send("Hi from product index");
-        });
-        this.router.get('/product/:name', (req: Request, res: Response) => {
-            res.send("Hi from product get by name " + req.params.name);
-        });
-        
-        this.router.post('/product', (req: Request, res: Response) => {
-            res.send("Hi from product post " + req.body);
-        });
+    @Path(':name')
+    @GET
+    productByName(@PathParam('name') name: string): {message: string} {
+        return OK({message: "Hi from product get by name " +name});
+    }
+    
+    @POST
+    postProduct(product: any): {message: string} {
+        return OK({message: "Hi from product post " + product});
     }
 }

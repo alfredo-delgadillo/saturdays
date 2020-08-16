@@ -1,23 +1,11 @@
-import express from 'express'
-import { Request, Response } from 'express'
+import {Path, GET} from 'typescript-rest';
+import {OK} from '../helpers/helper';
 
-export default class HomeController {
-    public router = express.Router();
-
-    constructor() {
-        this.initRoutes()
-    }
-
-    public initRoutes() {
-        this.router.get('/home', (req: Request, res: Response) => {
-            res.send("Hi from home index");
-        });
-        this.router.get('/home/:name', (req: Request, res: Response) => {
-            res.send("Hi from home get by name " + req.params.name);
-        });
-        
-        this.router.post('/home', (req: Request, res: Response) => {
-            res.send("Hi from home post " + req.body);
-        });
+@Path('/home')
+class HomeController {
+    
+    @GET
+    home(): {message: string} {
+            return OK({ message: "Hi from home index" });
     }
 }

@@ -1,33 +1,14 @@
 import express from 'express'
-import { Application } from 'express'
+import * as bodyParser from 'body-parser'
+import {Server} from "typescript-rest";
 
-class App {
-    public app: Application
+import './controllers';
 
-    constructor(appInit: { middleWares: any; controllers: any; }) {
-        this.app = express();
+export const app: express.Application = express();
+app.use(bodyParser.json());
 
-        this.middlewares(appInit.middleWares);
-        this.routes(appInit.controllers);
-    }
+Server.buildServices(app);
 
-    private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
-        middleWares.forEach(middleWare => {
-            this.app.use(middleWare)
-        })
-    }
-
-    private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
-        controllers.forEach(controller => {
-            this.app.use('/api', controller.router)
-        })
-    }
-
-    public listen() {
-        this.app.listen(3000, () => {
-            console.log(`App listening on 3000`)
-        })
-    }
-}
-
-export default App
+app.listen(3000, function() {
+  console.log('Rest Api Server listening on port 3000!');
+});
